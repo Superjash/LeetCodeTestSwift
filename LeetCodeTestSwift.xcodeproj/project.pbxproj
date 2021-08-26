@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		FE8BB18D24B9B13200310A76 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8BB18C24B9B13200310A76 /* main.swift */; };
-		FE8BB19624B9B43300310A76 /* Date+Timestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8BB19524B9B43300310A76 /* Date+Timestamp.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,7 +25,6 @@
 /* Begin PBXFileReference section */
 		FE8BB18924B9B13200310A76 /* LeetCodeTestSwift */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = LeetCodeTestSwift; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE8BB18C24B9B13200310A76 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		FE8BB19524B9B43300310A76 /* Date+Timestamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Timestamp.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,7 +58,6 @@
 			isa = PBXGroup;
 			children = (
 				FE8BB18C24B9B13200310A76 /* main.swift */,
-				FE8BB19524B9B43300310A76 /* Date+Timestamp.swift */,
 			);
 			path = LeetCodeTestSwift;
 			sourceTree = "<group>";
@@ -123,7 +120,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FE8BB19624B9B43300310A76 /* Date+Timestamp.swift in Sources */,
 				FE8BB18D24B9B13200310A76 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -248,7 +244,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8X43M95KKS;
+				DEVELOPMENT_TEAM = XMKX3XNZ6D;
 				ENABLE_HARDENED_RUNTIME = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -259,7 +255,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8X43M95KKS;
+				DEVELOPMENT_TEAM = XMKX3XNZ6D;
 				ENABLE_HARDENED_RUNTIME = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
