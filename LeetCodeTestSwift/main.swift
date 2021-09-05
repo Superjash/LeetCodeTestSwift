@@ -11,8 +11,7 @@ import Foundation
 print("Hello, World!")
 let begin = Date().timeIntervalSince1970
 
-//let value = Solution().findCheapestPrice(3, [[0,1,100],[1,2,100],[0,2,500]], 0, 2, 0)
-let value = Solution().findCheapestPrice(10, [[3,4,4],[2,5,6],[4,7,10],[9,6,5],[7,4,4],[6,2,10],[6,8,6],[7,9,4],[1,5,4],[1,0,4],[9,7,3],[7,0,5],[6,5,8],[1,7,6],[4,0,9],[5,9,1],[8,7,3],[1,2,6],[4,1,5],[5,2,4],[1,9,1],[7,8,10],[0,4,2],[7,2,8]], 6, 0, 7)
+let value = Solution().allPathsSourceTarget([[4,3,1],[3,2,4],[3],[4],[]])
 print("result \(value)")
 
 //let value = Solution().solveNQueens(9)
@@ -22,7 +21,22 @@ let end = Date().timeIntervalSince1970
 print("time consumed \((end - begin)) s")
 
 
+// MARK: 797. 所有可能的路径
+// https://leetcode-cn.com/problems/all-paths-from-source-to-target/
+// DFS、BFS再写一遍
+class Solution {
+    func allPathsSourceTarget(_ graph: [[Int]]) -> [[Int]] {
+        return []
+    }
+}
 
+// MARK: 787. K 站中转内最便宜的航班
+// https://leetcode-cn.com/problems/cheapest-flights-within-k-stops/
+// 看看题解有没有更好的办法
+
+// MARK: 51. N 皇后
+// https://leetcode-cn.com/problems/n-queens/
+// 回溯法再写一遍
 //class Solution {
 //    func solveNQueens(_ n: Int) -> [[String]] {
 //    }
@@ -197,6 +211,75 @@ class Question3 {
  */
 
 // MARK: ⚠️⚠️⚠️LeetCode 已解决
+/*
+// MARK: 797. 所有可能的路径
+// https://leetcode-cn.com/problems/all-paths-from-source-to-target/
+class Solution {
+    var cacheMap: [Int: [[Int]]] = [:]
+    func allPathsSourceTarget(_ graph: [[Int]]) -> [[Int]] {
+        let result = find(0, graph.count - 1, graph, [0])
+        return result
+    }
+    
+    func find(_ src: Int, _ dest: Int, _ graph: [[Int]], _ path: [Int]) -> [[Int]] {
+        if let cacheValue = cacheMap[src] {
+            var result: [[Int]] = []
+            for cache in cacheValue {
+                var r = path
+                r.append(contentsOf: cache)
+                result.append(r)
+            }
+            return result
+        }
+        var result: [[Int]] = []
+        let srcCanReach = graph[src]
+        for canReach in srcCanReach {
+            if canReach == dest {
+                var p = path
+                p.append(dest)
+                result.append(p)
+            } else {
+                var newPath = path
+                newPath.append(canReach)
+                let findResult = find(canReach, dest, graph, newPath)
+                for fr in findResult {
+                    if fr.last == dest {
+                        result.append(fr)
+                    }
+                }
+            }
+        }
+        var cacheValue: [[Int]] = []
+        for r in result {
+            cacheValue.append(Array(r.suffix(from: path.count)))
+        }
+        cacheMap[src] = cacheValue
+        return result
+    }
+}
+ */
+
+/*
+// MARK: 1588. 所有奇数长度子数组的和
+// https://leetcode-cn.com/problems/sum-of-all-odd-length-subarrays/
+class Solution {
+    func sumOddLengthSubarrays(_ arr: [Int]) -> Int {
+        var sum: Int = 0
+        for i in 0..<arr.count {
+            let left = i
+            let right = arr.count - i - 1
+            let leftOdd = (left + 1) / 2
+            let rightOdd = (right + 1) / 2
+            let leftEven = left / 2 + 1
+            let rightEven = right / 2 + 1
+            let multiple = leftOdd * rightOdd + leftEven * rightEven
+            sum += arr[i] * multiple
+        }
+        return sum
+    }
+}
+ */
+
 /*
 // MARK: 787. K 站中转内最便宜的航班
 // https://leetcode-cn.com/problems/cheapest-flights-within-k-stops/
