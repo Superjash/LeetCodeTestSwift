@@ -11,8 +11,11 @@ import Foundation
 print("Hello, World!")
 let begin = Date().timeIntervalSince1970
 
-let value = Solution().allPathsSourceTarget([[4,3,1],[3,2,4],[3],[4],[]])
+let value = Solution().lengthOfLastWord("   fly me   to   the moon")
 print("result \(value)")
+
+//let value = Solution().allPathsSourceTarget([[4,3,1],[3,2,4],[3],[4],[]])
+//print("result \(value)")
 
 //let value = Solution().solveNQueens(9)
 //print("result \(value)")
@@ -21,14 +24,15 @@ let end = Date().timeIntervalSince1970
 print("time consumed \((end - begin)) s")
 
 
+
 // MARK: 797. 所有可能的路径
 // https://leetcode-cn.com/problems/all-paths-from-source-to-target/
 // DFS、BFS再写一遍
-class Solution {
-    func allPathsSourceTarget(_ graph: [[Int]]) -> [[Int]] {
-        return []
-    }
-}
+//class Solution {
+//    func allPathsSourceTarget(_ graph: [[Int]]) -> [[Int]] {
+//        return []
+//    }
+//}
 
 // MARK: 787. K 站中转内最便宜的航班
 // https://leetcode-cn.com/problems/cheapest-flights-within-k-stops/
@@ -211,6 +215,56 @@ class Question3 {
  */
 
 // MARK: ⚠️⚠️⚠️LeetCode 已解决
+/*
+// MARK: 58. 最后一个单词的长度
+// https://leetcode-cn.com/problems/length-of-last-word/
+class Solution {
+    func lengthOfLastWord(_ s: String) -> Int {
+        var length = 0
+        var needsReset = false
+        for ch in s {
+            if ch == " " {
+                needsReset = true
+            } else {
+                if needsReset {
+                    needsReset = false
+                    length = 1
+                } else {
+                    length += 1
+                }
+            }
+        }
+        return length
+    }
+}
+ */
+
+/*
+// MARK: 650. 只有两个键的键盘
+// https://leetcode-cn.com/problems/2-keys-keyboard/
+class Solution {
+    func minSteps(_ n: Int) -> Int {
+        if n <= 1 {
+            return 0
+        } else if n == 2 {
+            return 2
+        }
+        var divisor = 0
+        for i in 0..<n/2 {
+            let reverse = n/2 - i
+            if n % reverse == 0 {
+                divisor = reverse
+                break
+            }
+        }
+        if divisor == 1 { // 说明是质数
+            return n
+        }
+        return minSteps(divisor) + (n / divisor)
+    }
+}
+ */
+
 /*
 // MARK: 797. 所有可能的路径
 // https://leetcode-cn.com/problems/all-paths-from-source-to-target/
