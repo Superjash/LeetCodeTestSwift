@@ -11,32 +11,11 @@ import Foundation
 print("Hello, World!")
 let begin = Date().timeIntervalSince1970
 
-let value = Solution().lengthOfLastWord("   fly me   to   the moon")
-print("result \(value)")
-
-//let value = Solution().allPathsSourceTarget([[4,3,1],[3,2,4],[3],[4],[]])
-//print("result \(value)")
-
 //let value = Solution().solveNQueens(9)
 //print("result \(value)")
 
 let end = Date().timeIntervalSince1970
 print("time consumed \((end - begin)) s")
-
-
-
-// MARK: 797. 所有可能的路径
-// https://leetcode-cn.com/problems/all-paths-from-source-to-target/
-// DFS、BFS再写一遍
-//class Solution {
-//    func allPathsSourceTarget(_ graph: [[Int]]) -> [[Int]] {
-//        return []
-//    }
-//}
-
-// MARK: 787. K 站中转内最便宜的航班
-// https://leetcode-cn.com/problems/cheapest-flights-within-k-stops/
-// 看看题解有没有更好的办法
 
 // MARK: 51. N 皇后
 // https://leetcode-cn.com/problems/n-queens/
@@ -268,6 +247,7 @@ class Solution {
 /*
 // MARK: 797. 所有可能的路径
 // https://leetcode-cn.com/problems/all-paths-from-source-to-target/
+// 动态规划解法
 class Solution {
     var cacheMap: [Int: [[Int]]] = [:]
     func allPathsSourceTarget(_ graph: [[Int]]) -> [[Int]] {
@@ -309,6 +289,66 @@ class Solution {
         }
         cacheMap[src] = cacheValue
         return result
+    }
+}
+
+// DFS 遍历解法
+class Solution {
+    var graph: [[Int]] = []
+    var result: [[Int]] = []
+    var dest: Int = 0
+    func allPathsSourceTarget(_ graph: [[Int]]) -> [[Int]] {
+        self.graph = graph
+        self.dest = graph.count - 1
+        findPath(0, [0])
+        return result
+    }
+    
+    func findPath(_ currentSpot: Int, _ currentRoute: [Int]) {
+        if currentSpot == dest {
+            result.append(currentRoute)
+        } else {
+            for spot in graph[currentSpot] {
+                var route = currentRoute
+                route.append(spot)
+                findPath(spot, route)
+            }
+        }
+    }
+}
+ 
+// BFS 遍历解法
+class Solution {
+    func allPathsSourceTarget(_ graph: [[Int]]) -> [[Int]] {
+        var result: [[Int]] = []
+        var queue: [PathNode] = [PathNode(0, [0])]
+        while queue.count > 0 {
+            let firstNode = queue.removeFirst()
+            for nextStep in graph[firstNode.value] {
+                if nextStep == graph.count - 1 {
+                    // 终点
+                    var path = firstNode.path
+                    path.append(nextStep)
+                    result.append(path)
+                } else {
+                    var path = firstNode.path
+                    path.append(nextStep)
+                    let node = PathNode(nextStep, path)
+                    queue.append(node)
+                }
+            }
+        }
+        return result
+    }
+}
+
+class PathNode {
+    var value = 0
+    var path: [Int] = []
+    
+    init(_ value: Int, _ path: [Int]) {
+        self.value = value
+        self.path = path
     }
 }
  */
