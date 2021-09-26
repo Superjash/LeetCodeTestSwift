@@ -11,19 +11,13 @@ import Foundation
 print("Hello, World!")
 let begin = Date().timeIntervalSince1970
 
-//let value = Solution().solveNQueens(9)
-//print("result \(value)")
+let value = Solution().minDistance("sea", "eat")
+print("result \(value)")
 
 let end = Date().timeIntervalSince1970
 print("time consumed \((end - begin)) s")
 
-// MARK: 51. N 皇后
-// https://leetcode-cn.com/problems/n-queens/
-// 回溯法再写一遍
-//class Solution {
-//    func solveNQueens(_ n: Int) -> [[String]] {
-//    }
-//}
+
 
 // MARK: ⚠️⚠️⚠️LeetCode 未解决
 // MARK: 403. 青蛙过河
@@ -194,6 +188,232 @@ class Question3 {
  */
 
 // MARK: ⚠️⚠️⚠️LeetCode 已解决
+
+/*
+// MARK: 583. 两个字符串的删除操作
+// https://leetcode-cn.com/problems/delete-operation-for-two-strings/
+class Solution {
+    func minDistance(_ word1: String, _ word2: String) -> Int {
+        let common = longestCommonSubsequence(word1, word2)
+        return word1.count - common + word2.count - common
+    }
+    
+    func longestCommonSubsequence(_ text1: String, _ text2: String) -> Int {
+        // text1 为横轴，text2 为纵轴，建表
+        var chart: [[Int]] = []
+        var i = 0
+        for ch2 in text2 {
+            var thisRow: [Int] = []
+            var j = 0
+            for ch1 in text1 {
+                if ch1 == ch2 {
+                    // 如果两字符相等，对比左上方格子（如无左上方则取1）和上方格子（如无上方则取0）
+                    let leftTop = i > 0 && j > 0 ? chart[i-1][j-1] + 1 : 1
+                    let top = i > 0 ? chart[i-1][j] : 0
+                    thisRow.append(max(leftTop, top))
+                } else {
+                    // 如果两字符不等，对比左方格子（如无左方则取0）和上方格子（如无上方则取0）
+                    let left = j > 0 ? thisRow[j-1] : 0
+                    let top = i > 0 ? chart[i-1][j] : 0
+                    thisRow.append(max(left, top))
+                }
+                j += 1
+            }
+            chart.append(thisRow)
+            i += 1
+        }
+        return chart[text2.count-1][text1.count-1]
+    }
+}
+ */
+
+/*
+// MARK: 1143. 最长公共子序列
+// https://leetcode-cn.com/problems/longest-common-subsequence/
+class Solution {
+    func longestCommonSubsequence(_ text1: String, _ text2: String) -> Int {
+        // text1 为横轴，text2 为纵轴，建表
+        var chart: [[Int]] = []
+        var i = 0
+        for ch2 in text2 {
+            var thisRow: [Int] = []
+            var j = 0
+            for ch1 in text1 {
+                if ch1 == ch2 {
+                    // 如果两字符相等，对比左上方格子（如无左上方则取1）和上方格子（如无上方则取0）
+                    let leftTop = i > 0 && j > 0 ? chart[i-1][j-1] + 1 : 1
+                    let top = i > 0 ? chart[i-1][j] : 0
+                    thisRow.append(max(leftTop, top))
+                } else {
+                    // 如果两字符不等，对比左方格子（如无左方则取0）和上方格子（如无上方则取0）
+                    let left = j > 0 ? thisRow[j-1] : 0
+                    let top = i > 0 ? chart[i-1][j] : 0
+                    thisRow.append(max(left, top))
+                }
+                j += 1
+            }
+            chart.append(thisRow)
+            i += 1
+        }
+        return chart[text2.count-1][text1.count-1]
+    }
+}
+ */
+
+/*
+// MARK: 725. 分隔链表
+// https://leetcode-cn.com/problems/split-linked-list-in-parts/
+class Solution {
+    func splitListToParts(_ head: ListNode?, _ k: Int) -> [ListNode?] {
+        guard let head = head else {
+            var nodes: [ListNode?] = []
+            while nodes.count < k {
+                nodes.append(nil)
+            }
+            return nodes
+        }
+        var count: Int = 1
+        var node: ListNode = head
+        while true {
+            if let next = node.next {
+                count += 1
+                node = next
+            } else {
+                break
+            }
+        }
+        
+        let perFragmentCount = count / k // 每个分隔链表中的节点数
+        let extraFragmentCount = count % k // 前xx个分隔链表的节点数会多1
+        
+        node = head
+        var index = 0
+        var nodes: [ListNode?] = [node]
+        var lasNode = node // 用来截断链表
+        while true {
+            if (nodes.count <= extraFragmentCount && index == (perFragmentCount + 1)) || (nodes.count > extraFragmentCount && index == perFragmentCount) {
+                index = 0
+                nodes.append(node)
+                lasNode.next = nil
+            }
+            if let next = node.next {
+                lasNode = node
+                node = next
+                index += 1
+            } else {
+                break
+            }
+        }
+        while nodes.count < k {
+            nodes.append(nil)
+        }
+        return nodes
+    }
+}
+
+public class ListNode {
+    public var val: Int
+    public var next: ListNode?
+    
+    public init() {
+        self.val = 0; self.next = nil;
+    }
+    
+    public init(_ val: Int) {
+        self.val = val; self.next = nil;
+    }
+    
+    public init(_ val: Int, _ next: ListNode?) {
+        self.val = val; self.next = next;
+    }
+}
+ */
+
+/*
+// MARK: 326. 3的幂
+// https://leetcode-cn.com/problems/power-of-three/
+// 暴力除
+class Solution {
+    func isPowerOfThree(_ n: Int) -> Bool {
+        if n == 1 {
+            return true
+        } else if n < 3 {
+            return false
+        }
+        var num = n
+        while num >= 3 {
+            if num % 3 != 0 {
+                return false
+            }
+            num /= 3
+        }
+        return num == 1
+    }
+}
+
+// 找到符合题设条件的最高次幂
+class Solution {
+    func isPowerOfThree(_ n: Int) -> Bool {
+        /*
+            题设条件 -231 <= n <= 231 - 1
+            1162261467 = 3的19次方
+            是符合题设条件的最高次幂
+            因此只需判断 n 是否可以被其整除
+           */
+        //
+        return n > 0 && 1162261467 % n == 0
+    }
+}
+ */
+
+/*
+// MARK: 430. 扁平化多级双向链表
+// https://leetcode-cn.com/problems/flatten-a-multilevel-doubly-linked-list/
+class Solution {
+    func flatten(_ head: Node?) -> Node? {
+        guard let head = head else {
+            return nil
+        }
+        flat(head)
+        return head
+    }
+    
+    @discardableResult func flat(_ head: Node) -> Node? {
+        var currentNode: Node = head
+        while true {
+            if currentNode.child != nil {
+                let next = currentNode.next
+                currentNode.next = currentNode.child
+                currentNode.child = nil
+                currentNode.next?.prev = currentNode
+                let childLast = flat(currentNode)
+                childLast?.next = next
+                next?.prev = childLast
+                if let n = next {
+                    currentNode = n
+                } else {
+                    return childLast
+                }
+            } else if let next = currentNode.next {
+                currentNode = next
+            } else {
+                return currentNode
+            }
+        }
+    }
+}
+
+class Node {
+    var val: Int
+    var prev: Node?
+    var next: Node?
+    var child: Node?
+    init(_ val: Int) {
+        self.val = val
+    }
+}
+ */
+
 /*
 // MARK: 58. 最后一个单词的长度
 // https://leetcode-cn.com/problems/length-of-last-word/
@@ -533,8 +753,6 @@ class Solution {
 /*
 // MARK: 51. N 皇后
 // https://leetcode-cn.com/problems/n-queens/
-// 回溯法
- 
 // 正面求解法
 class QueenNode {
     var targetN: Int = 0 // N皇后的N
@@ -602,6 +820,85 @@ class Solution {
             result.append("\(String(repeating: ".", count: val))Q\(String(repeating: ".", count: n - val - 1))")
         }
         return result
+    }
+}
+
+// 递归回溯法
+class Solution {
+    var result: [[String]] = []
+    
+    func solveNQueens(_ n: Int) -> [[String]] {
+        insertQ(0, n, generateCheeseBoard(n))
+        return result
+    }
+    
+    func insertQ(_ onRow: Int, _ totalRow: Int, _ cheeseBoard: [[Int]]) {
+        for i in 0..<totalRow {
+            // 即将在 onRow 行，i 列插入 Q，检查在此插入是否合法
+            if checkIsValid(onRow, i, cheeseBoard) {
+                var cheeseBoard = cheeseBoard
+                cheeseBoard[onRow][i] = 1
+                if onRow == totalRow - 1 {
+                    // 已经到底，说明这是一个解
+                    recordCheeseBoard(cheeseBoard)
+                } else {
+                    // 仍未到底，继续递归
+                    insertQ(onRow + 1, totalRow, cheeseBoard)
+                }
+            }
+            // 不可插入，直接进入下一个位置的检查
+        }
+    }
+    
+    func checkIsValid(_ onRow: Int, _ onColumn: Int, _ cheeseBoard: [[Int]]) -> Bool {
+        for i in 0..<onRow {
+            let thisRow = cheeseBoard[i]
+            // 检查是否有同列的 Q
+            if thisRow[onColumn] == 1 {
+                return false
+            }
+            // 检查左上是否有 Q
+            let topLeftColumn = onColumn - (onRow - i)
+            if topLeftColumn >= 0 && thisRow[topLeftColumn] == 1 {
+                return false
+            }
+            let topRightColumn = onColumn + (onRow - i)
+            if topRightColumn < thisRow.count && thisRow[topRightColumn] == 1 {
+                return false
+            }
+        }
+        
+        // 都没有，合法
+        return true
+    }
+    
+    func recordCheeseBoard(_ cheeseBoard: [[Int]]) {
+        var rowsToString: [String] = []
+        for i in 0..<cheeseBoard.count {
+            let row = cheeseBoard[i]
+            var rowStr: String = ""
+            for j in 0..<row.count {
+                if row[j] == 1 {
+                    rowStr.append("Q")
+                } else {
+                    rowStr.append(".")
+                }
+            }
+            rowsToString.append(rowStr)
+        }
+        self.result.append(rowsToString)
+    }
+    
+    func generateCheeseBoard(_ n: Int) -> [[Int]] {
+        var cheeseBoard: [[Int]] = []
+        for _ in 0..<n {
+            var row: [Int] = []
+            for _ in 0..<n {
+                row.append(0)
+            }
+            cheeseBoard.append(row)
+        }
+        return cheeseBoard
     }
 }
  */
