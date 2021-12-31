@@ -11,13 +11,11 @@ import Foundation
 print("Hello, World!")
 let begin = Date().timeIntervalSince1970
 
-let value = Solution().minDistance("sea", "eat")
+let value = Solution().checkPerfectNumber(1)
 print("result \(value)")
 
 let end = Date().timeIntervalSince1970
 print("time consumed \((end - begin)) s")
-
-
 
 // MARK: ⚠️⚠️⚠️LeetCode 未解决
 // MARK: 403. 青蛙过河
@@ -188,6 +186,326 @@ class Question3 {
  */
 
 // MARK: ⚠️⚠️⚠️LeetCode 已解决
+
+/*
+// MARK: 507. 完美数
+// https://leetcode-cn.com/problems/perfect-number/
+class Solution {
+    func checkPerfectNumber(_ num: Int) -> Bool {
+        if num <= 1 {
+            return false
+        }
+        var sum = 1
+        var factor = 2
+        while factor <= (num / 2) {
+            if num % factor == 0 {
+                sum += factor
+            }
+            factor += 1
+        }
+        return num == sum
+    }
+}
+*/
+
+/*
+// MARK: 434. 字符串中的单词数
+// https://leetcode-cn.com/problems/number-of-segments-in-a-string/
+class Solution {
+    func countSegments(_ s: String) -> Int {
+        var segmentsCount = 0
+        var isCountingLetter = false
+        for ch in s {
+            if ch == " " {
+                if isCountingLetter {
+                    isCountingLetter = false
+                    segmentsCount += 1
+                }
+            } else {
+                isCountingLetter = true
+            }
+        }
+        if isCountingLetter {
+            segmentsCount += 1
+        }
+        return segmentsCount
+    }
+}
+ */
+
+/*
+// MARK: 414. 第三大的数
+// https://leetcode-cn.com/problems/third-maximum-number/
+class Solution {
+    func thirdMax(_ nums: [Int]) -> Int {
+        var topThree: [Int] = []
+        for num in nums {
+            var isSmallerThanAll = true
+            for i in 0..<topThree.count {
+                let topNum = topThree[i]
+                if topNum == num {
+                    // 题里说了：注意，要求返回第三大的数，是指在所有不同数字中排第三大的数
+                    // 因此同样的数二次出现直接跳过
+                    isSmallerThanAll = false
+                    break
+                } else if topNum < num {
+                    // 发现更大的数，插在前面
+                    topThree.insert(num, at: i)
+                    if topThree.count > 3 {
+                        topThree.removeLast()
+                    }
+                    isSmallerThanAll = false
+                    break
+                }
+            }
+            if isSmallerThanAll && topThree.count < 3 {
+                topThree.append(num)
+            }
+        }
+        if topThree.count >= 3 {
+            return topThree[2]
+        } else {
+            return topThree.first ?? 0
+        }
+    }
+}
+ */
+
+/*
+// MARK: 284. 窥探迭代器
+// https://leetcode-cn.com/problems/peeking-iterator/
+// Swift IndexingIterator refernence:
+// https://developer.apple.com/documentation/swift/indexingiterator
+class PeekingIterator {
+    
+    var iter: IndexingIterator<Array<Int>>
+    var nextEle: Int?
+    
+    init(_ arr: IndexingIterator<Array<Int>>) {
+        iter = arr
+        nextEle = iter.next()
+    }
+    
+    func next() -> Int {
+        let next = nextEle
+        nextEle = iter.next()
+        return next ?? 0
+    }
+    
+    func peek() -> Int {
+        return nextEle ?? 0
+    }
+    
+    func hasNext() -> Bool {
+        return nextEle != nil
+    }
+}
+
+/**
+ * Your PeekingIterator object will be instantiated and called as such:
+ * let obj = PeekingIterator(arr)
+ * let ret_1: Int = obj.next()
+ * let ret_2: Int = obj.peek()
+ * let ret_3: Bool = obj.hasNext()
+ */
+ */
+
+/*
+// MARK: 482. 密钥格式化
+// https://leetcode-cn.com/problems/license-key-formatting/
+class Solution {
+    func licenseKeyFormatting(_ s: String, _ k: Int) -> String {
+        let rev = String(s.reversed())
+        var result = ""
+        var count = 0
+        for ch in rev {
+            if ch == "-" {
+                continue
+            }
+            result.append(ch.uppercased())
+            count += 1
+            if count % k == 0 {
+                result.append("-")
+            }
+        }
+        if result.count > 0 && result.last == "-" {
+            result = String(result.dropLast(1))
+        }
+        return String(result.reversed())
+    }
+}
+ */
+
+/*
+// MARK: 166. 分数到小数
+// https://leetcode-cn.com/problems/fraction-to-recurring-decimal/
+class Solution {
+    func fractionToDecimal(_ numerator: Int, _ denominator: Int) -> String {
+        let symbol = numerator * denominator >= 0 ? "" : "-"
+        let num = numerator >= 0 ? numerator : numerator * -1
+        let den = denominator >= 0 ? denominator : denominator * -1
+        let beforeDot = num / den
+        var remain = num % den
+        if remain == 0 {
+            return "\(symbol)\(beforeDot)"
+        }
+        var remains: [Int] = []
+        var strs: [String] = []
+        while true {
+            if let idx = remains.firstIndex(of: remain) {
+                strs.insert("(", at: idx)
+                strs.append(")")
+                return "\(symbol)\(beforeDot).\(strs.joined())"
+            }
+            remains.append(remain)
+            strs.append("\(remain * 10 / den)")
+            remain = remain * 10 % den
+            if remain == 0 {
+                // 整除了，不需要()标记循环体
+                return "\(symbol)\(beforeDot).\(strs.joined())"
+            }
+        }
+    }
+}
+ */
+
+/*
+// MARK: 405. 数字转换为十六进制数
+// https://leetcode-cn.com/problems/convert-a-number-to-hexadecimal/
+class Solution {
+    func toHex(_ num: Int) -> String {
+        if num == 0 {
+            return "0"
+        }
+        var hex: String = ""
+        for i in 0..<8 {
+            let index = 7 - i
+            let thisNum = (num >> (4 * index)) & 0xf
+            if thisNum == 0 {
+                if hex.count > 0 { // 不计先导0
+                    hex.append("\(thisNum)")
+                }
+            } else if thisNum < 10 {
+                hex.append("\(thisNum)")
+            } else if thisNum == 10 {
+                hex.append("a")
+            } else if thisNum == 11 {
+                hex.append("b")
+            } else if thisNum == 12 {
+                hex.append("c")
+            } else if thisNum == 13 {
+                hex.append("d")
+            } else if thisNum == 14 {
+                hex.append("e")
+            } else if thisNum == 15 {
+                hex.append("f")
+            }
+        }
+        return hex
+    }
+}
+ */
+
+/*
+// MARK: 1436. 旅行终点站
+// https://leetcode-cn.com/problems/destination-city/
+class Solution {
+    // 更为简化的逻辑：先记录全部的起点，然后在全部的终点中搜索不被起点包含的那一个
+    func destCity(_ paths: [[String]]) -> String {
+        var map: [String: Int] = [:]
+        for path in paths {
+            map[path[0]] = 0
+        }
+        for path in paths {
+            if map[path[1]] == nil {
+                return path[1]
+            }
+        }
+        return ""
+    }
+    
+//    func destCity(_ paths: [[String]]) -> String {
+//        var map: [String: Int] = [:] // 城市: 该城市是否可以作为起点前往下一站
+//        for path in paths {
+//            let dest = path[1]
+//            if map[dest] == nil {
+//                map[dest] = 0
+//            }
+//            let origin = path[0]
+//            map[origin] = 1
+//        }
+//        for key in map.keys {
+//            if map[key] == 0 {
+//                return key
+//            }
+//        }
+//        return ""
+//    }
+}
+ */
+
+/*
+// MARK: 223. 矩形面积
+// https://leetcode-cn.com/problems/rectangle-area/
+class Solution {
+    func computeArea(_ ax1: Int, _ ay1: Int, _ ax2: Int, _ ay2: Int, _ bx1: Int, _ by1: Int, _ bx2: Int, _ by2: Int) -> Int {
+        let rect1 = (ax2 - ax1) * (ay2 - ay1) // 矩形1的面积
+        let rect2 = (bx2 - bx1) * (by2 - by1) // 矩形2的面积
+        let conincideX = computeCoincide(ax1, ax2, bx1, bx2) // x轴重合长度
+        let conincideY = computeCoincide(ay1, ay2, by1, by2) // y轴重合长度
+        return rect1 + rect2 - conincideX * conincideY
+    }
+    
+    // 更为简化的重合计算
+    func computeCoincide(_ ax1: Int, _ ax2: Int, _ bx1: Int, _ bx2: Int) -> Int {
+        let left = max(ax1, bx1)
+        let right = min(ax2, bx2)
+        return max(0, right - left)
+    }
+    
+//    func computeCoincide(_ ax1: Int, _ ax2: Int, _ bx1: Int, _ bx2: Int) -> Int {
+//        // 为简化包含关系，先确定长短边
+//        let isALonger = ax2 - ax1 > bx2 - bx1
+//        // 短边
+//        let sx1 = isALonger ? bx1 : ax1
+//        let sx2 = isALonger ? bx2 : ax2
+//        // 长边
+//        let lx1 = isALonger ? ax1 : bx1
+//        let lx2 = isALonger ? ax2 : bx2
+//
+//        if sx2 < lx1 {
+//            // 短边完全在长边左侧，无重合
+//            return 0
+//        } else if sx1 < lx1 {
+//            // 短边右侧进入长边，但左侧仍在长边以外
+//            return sx2 - lx1
+//        } else if sx2 < lx2 {
+//            // 短边左侧也进入长边，但右侧仍在长边以内
+//            return sx2 - sx1
+//        } else if sx1 < lx2 {
+//            // 短边右侧走出长边，但左侧仍在长边之内
+//            return lx2 - sx1
+//        } else {
+//            // 短边左侧走出长边右侧，无重合
+//            return 0
+//        }
+//    }
+}
+ */
+
+/*
+// MARK: 371. 两整数之和
+// https://leetcode-cn.com/problems/sum-of-two-integers/
+class Solution {
+    func getSum(_ a: Int, _ b: Int) -> Int {
+        if b == 0 {
+            return a
+        }
+        // 按位异或，算出对位想加（不带进位）的结果，按位与并左移一位算出进位的结果，二者相加即为最终结果
+        return getSum(a ^ b, (a & b) << 1)
+    }
+}
+ */
 
 /*
 // MARK: 583. 两个字符串的删除操作
