@@ -11,11 +11,13 @@ import Foundation
 print("Hello, World!")
 let begin = Date().timeIntervalSince1970
 
-let value = Solution().checkPerfectNumber(1)
+let value = Solution().construct2DArray([1,2,3], 1, 3)
 print("result \(value)")
 
 let end = Date().timeIntervalSince1970
 print("time consumed \((end - begin)) s")
+
+
 
 // MARK: ⚠️⚠️⚠️LeetCode 未解决
 // MARK: 403. 青蛙过河
@@ -186,6 +188,24 @@ class Question3 {
  */
 
 // MARK: ⚠️⚠️⚠️LeetCode 已解决
+
+/*
+// MARK: 2022. 将一维数组转变成二维数组
+// https://leetcode-cn.com/problems/convert-1d-array-into-2d-array/
+class Solution {
+    func construct2DArray(_ original: [Int], _ m: Int, _ n: Int) -> [[Int]] {
+        if original.count != m * n {
+            return []
+        }
+        var newArray: [[Int]] = []
+        for i in 0..<m {
+            let element = original[n*i...(n*(i+1)-1)]
+            newArray.append(Array(element))
+        }
+        return newArray
+    }
+}
+ */
 
 /*
 // MARK: 507. 完美数
