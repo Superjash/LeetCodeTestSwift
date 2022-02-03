@@ -10,8 +10,7 @@ import Foundation
 
 print("Hello, World!")
 let begin = Date().timeIntervalSince1970
-
-let value = Solution().numberOfSteps(0)
+let value = Solution().countGoodRectangles([[2,3],[3,7],[4,3],[3,7]])
 print("result \(value)")
 
 let end = Date().timeIntervalSince1970
@@ -38,7 +37,6 @@ print("time consumed \((end - begin)) s")
 //}
 
 // MARK: ⚠️⚠️⚠️LeetCode 未解决
-
 /*
 // MARK: 982. 按位与为零的三元组
 // https://leetcode-cn.com/problems/triples-with-bitwise-and-equal-to-zero/
@@ -147,7 +145,121 @@ class Question3 {
 
 // MARK: ⚠️⚠️⚠️LeetCode 已解决-简单
 /*
-// 1342. 将数字变成 0 的操作次数
+// MARK: 1725. 可以形成最大正方形的矩形数目
+// https://leetcode-cn.com/problems/number-of-rectangles-that-can-form-the-largest-square/
+class Solution {
+    func countGoodRectangles(_ rectangles: [[Int]]) -> Int {
+        var map: [Int: Int] = [:]
+        for rect in rectangles {
+            let length = min(rect[0], rect[1])
+            if let value = map[length] {
+                map[length] = value + 1
+            } else {
+                map[length] = 1
+            }
+        }
+        var maxKey: Int = 0
+        for k in map.keys {
+            maxKey = max(maxKey, k)
+        }
+        return map[maxKey] ?? 0
+    }
+}
+ */
+
+/*
+// MARK: 395. 至少有 K 个重复字符的最长子串
+// https://leetcode-cn.com/problems/longest-substring-with-at-least-k-repeating-characters/
+class Solution {
+    func uncommonFromSentences(_ s1: String, _ s2: String) -> [String] {
+        var map1: [String: Int] = [:]
+        var map2: [String: Int] = [:]
+        for str in s1.components(separatedBy: " ") {
+            if let value = map1[str] {
+                map1[str] = value + 1
+            } else {
+                map1[str] = 1
+            }
+        }
+        for str in s2.components(separatedBy: " ") {
+            if let value = map2[str] {
+                map2[str] = value + 1
+            } else {
+                map2[str] = 1
+            }
+        }
+        var result: [String] = []
+        for k in map1.keys {
+            if map1[k] == 1 && map2[k] == nil {
+                result.append(k)
+            }
+        }
+        for k in map2.keys {
+            if map2[k] == 1 && map1[k] == nil {
+                result.append(k)
+            }
+        }
+        return result
+    }
+}
+ */
+
+/*
+// MARK: 1763. 最长的美好子字符串
+// https://leetcode-cn.com/problems/longest-nice-substring/
+class Solution {
+    func longestNiceSubstring(_ s: String) -> String {
+        var chs: [Character] = []
+        chs.append(contentsOf: s)
+        
+        var result = ""
+        for i in 0..<s.count {
+            for j in i+1..<s.count {
+                if j-i+1 > result.count {
+                    var chSet: Set<Character> = []
+                    var upperSet: Set<Character> = []
+                    for k in i...j {
+                        let ch = chs[k]
+                        chSet.insert(ch)
+                        upperSet.insert(ch.uppercased().first!)
+                    }
+                    if chSet.count == upperSet.count * 2 {
+                        let curChs = Array(chs[i...j])
+                        var curResult = ""
+                        curResult.append(contentsOf: curChs)
+                        result = curResult
+                    }
+                }
+            }
+        }
+        return result
+    }
+}
+ */
+
+/*
+// MARK: 2000. 反转单词前缀
+// https://leetcode-cn.com/problems/reverse-prefix-of-word/
+class Solution {
+    func reversePrefix(_ word: String, _ ch: Character) -> String {
+        var chs: [Character] = []
+        var hasReversed = false
+        for wch in word {
+            chs.append(wch)
+            if !hasReversed  && wch == ch {
+                chs.reverse()
+                hasReversed = true
+            }
+        }
+        var str = ""
+        str.append(contentsOf: chs)
+        return str
+    }
+}
+ */
+
+/*
+// MARK: 1342. 将数字变成 0 的操作次数
 // https://leetcode-cn.com/problems/number-of-steps-to-reduce-a-number-to-zero/
 class Solution {
     func numberOfSteps(_ num: Int) -> Int {
@@ -784,6 +896,45 @@ class Question1 {
 */
 
 // MARK: ⚠️⚠️⚠️LeetCode 已解决-中等
+/*
+// MARK: 1414. 和为 K 的最少斐波那契数字数目
+// https://leetcode-cn.com/problems/find-the-minimum-number-of-fibonacci-numbers-whose-sum-is-k/
+// 精彩的证明 https://leetcode-cn.com/problems/find-the-minimum-number-of-fibonacci-numbers-whose-sum-is-k/solution/he-wei-k-de-zui-shao-fei-bo-na-qi-shu-zi-shu-mu-by/
+class Solution {
+    func findMinFibonacciNumbers(_ k: Int) -> Int {
+        var fibonacci: [Int] = [1, 1]
+        var a: Int = 1 // bigger one
+        var b: Int = 1 // smaller one
+        while a + b <= k {
+            let next = a + b
+            b = a
+            a = next
+            fibonacci.append(next)
+        }
+        var ans: Int = 0
+        var k = k
+        for i in 0..<fibonacci.count {
+            if k == 0 {
+                break
+            }
+            let index = fibonacci.count - i - 1
+            if k >= fibonacci[index] {
+                k -= fibonacci[index]
+                print("\(fibonacci[index]), \(k)")
+                ans += 1
+            }
+        }
+        return ans
+    }
+    
+//    func fibonacciValue(_ index: Int) -> Int { // 斐波那契数列通项公式
+//        let an = (pow(Decimal((1 + sqrt(5)) / 2), index) - pow(Decimal((1 - sqrt(5)) / 2), index)) / Decimal(sqrt(5))
+//        let DoubleAn = Double(truncating: an as NSNumber)
+//        return Int(DoubleAn)
+//    }
+}
+ */
+
 /*
 // MARK: 71. 简化路径
 // https://leetcode-cn.com/problems/simplify-path/
