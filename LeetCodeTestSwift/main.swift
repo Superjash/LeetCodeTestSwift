@@ -10,13 +10,17 @@ import Foundation
 
 print("Hello, World!")
 let begin = Date().timeIntervalSince1970
-let value = Solution().countGoodRectangles([[2,3],[3,7],[4,3],[3,7]])
+let value = Solution().getMaximumGold([[0,6,0],[5,8,7],[0,9,0]])
 print("result \(value)")
 
 let end = Date().timeIntervalSince1970
 print("time consumed \((end - begin)) s")
 
+class Solution {
+    func getMaximumGold(_ grid: [[Int]]) -> Int {
 
+    }
+}
 
 //class Solution {
 //    func PredictTheWinner(_ nums: [Int]) -> Bool {
