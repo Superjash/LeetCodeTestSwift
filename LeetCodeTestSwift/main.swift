@@ -40,7 +40,7 @@ class Solution {
 //    }
 //}
 
-// MARK: ⚠️⚠️⚠️LeetCode 未解决
+// MARK: ⚠️⚠️⚠️LeetCode 未解决-4
 /*
 // MARK: 982. 按位与为零的三元组
 // https://leetcode-cn.com/problems/triples-with-bitwise-and-equal-to-zero/
@@ -147,7 +147,238 @@ class Question3 {
 }
  */
 
-// MARK: ⚠️⚠️⚠️LeetCode 已解决-简单
+// MARK: ⚠️⚠️⚠️LeetCode 已解决-简单-32
+/*
+// MARK: 1668. 最大重复子字符串
+// https://leetcode.cn/problems/maximum-repeating-substring/description/
+class Solution {
+    func maxRepeating(_ sequence: String, _ word: String) -> Int {
+        var string = sequence as NSString
+        var maxRepeatingCount = 0
+        
+        while true {
+            let range = string.range(of: word)
+            if range.location == NSNotFound { // 已经找不到了，结束
+                break
+            }
+            // word 第一次出现
+            var currentRepeatingCount = 1
+            // 把后面的字符串放入循环
+            var currentString = string.substring(from: range.location + range.length) as NSString
+            while true {
+                let repeatingRange = currentString.range(of: word)
+                if repeatingRange.location == 0 {
+                    // 重复出现在开头，有效
+                    currentRepeatingCount += 1
+                    currentString = currentString.substring(from: word.count) as NSString
+                } else {
+                    // 无重复，或重复不在开头，重复被打断，计数，结束
+                    maxRepeatingCount = max(maxRepeatingCount, currentRepeatingCount)
+                    break
+                }
+            }
+            
+            /*
+             本来想： 本次查找结束，从结尾开始继续查找。但是不能这么找！
+             极端case："aaabaaaabaaabaaaabaaaabaaaabaaaaba", "aaaba"
+             从结尾开始继续找会错过一次匹配！
+             所以要从匹配开头的下一个字符开始继续查找
+             */
+            string = string.substring(from: range.location + 1) as NSString
+        }
+        return maxRepeatingCount
+    }
+}
+ */
+
+/*
+// MARK: 1662. 检查两个字符串数组是否相等
+// https://leetcode.cn/problems/check-if-two-string-arrays-are-equivalent/description/
+class Solution {
+    func arrayStringsAreEqual(_ word1: [String], _ word2: [String]) -> Bool {
+        let string1 = word1.joined()
+        let string2 = word2.joined()
+        return string1 == string2
+    }
+}
+ */
+
+/*
+// MARK: 504. 七进制数
+// https://leetcode.cn/problems/base-7/description/
+class Solution {
+    func convertToBase7(_ num: Int) -> String {
+        let isNeg = num < 0
+        var num = isNeg ? -num : num
+        var base7Str = isNeg ? "-" : ""
+        
+        var divide = 5764801
+        var hasPrifixNone0 = false
+        
+        while divide > 0 {
+            let ele = num / divide
+            if ele > 0 {
+                base7Str.append("\(ele)")
+                hasPrifixNone0 = true
+            } else {
+                if hasPrifixNone0 {
+                    base7Str.append("\(ele)")
+                }
+            }
+            num = num % divide
+            divide /= 7
+        }
+        
+        if (isNeg && base7Str.count == 1) || (!isNeg && base7Str.count == 0) {
+            base7Str.append("0")
+        }
+        
+        return base7Str
+    }
+}
+ */
+
+/*
+// MARK: 917. 仅仅反转字母
+// https://leetcode.cn/problems/reverse-only-letters/description/
+class Solution {
+    func reverseOnlyLetters(_ s: String) -> String {
+        var letters: [Character] = []
+        for ch in s {
+            if let asc = ch.asciiValue, ((asc >= 65 && asc <= 90) || (asc >= 97 && asc <= 122)) {
+                letters.append(ch)
+            }
+        }
+        var full: String = ""
+        for ch in s {
+            if let asc = ch.asciiValue, ((asc >= 65 && asc <= 90) || (asc >= 97 && asc <= 122)) {
+                full.append(letters.last ?? ".")
+                letters = letters.dropLast()
+            } else {
+                full.append(ch)
+            }
+        }
+        return full
+    }
+}
+ */
+
+/*
+// MARK: 1380. 矩阵中的幸运数
+// https://leetcode.cn/problems/lucky-numbers-in-a-matrix/description/
+class Solution {
+    func luckyNumbers (_ matrix: [[Int]]) -> [Int] {
+        var lucky: [Int] = []
+        for r in 0..<matrix.count {
+            var rowMinValue = 100001
+            var rowMinIndex = 0
+            let rowArray = matrix[r]
+            for i in 0..<rowArray.count {
+                if rowArray[i] < rowMinValue {
+                    rowMinValue = rowArray[i]
+                    rowMinIndex = i
+                }
+            }
+            var isMax = true
+            for rr in 0..<matrix.count {
+                if matrix[rr][rowMinIndex] > rowMinValue {
+                    isMax = false
+                    break
+                }
+            }
+            if isMax {
+                lucky.append(rowMinValue)
+            }
+        }
+        return lucky
+    }
+}
+ */
+
+/*
+// MARK: 1748. 唯一元素的和
+// https://leetcode.cn/problems/sum-of-unique-elements/description/
+class Solution {
+    func sumOfUnique(_ nums: [Int]) -> Int {
+        var map: [Int: Int] = [:]
+        for num in nums {
+            if let count = map[num] {
+                map[num] = count + 1
+            } else {
+                map[num] = 1
+            }
+        }
+        var sum: Int = 0
+        for k in map.keys {
+            if map[k] == 1 {
+                sum += k
+            }
+        }
+        return sum
+    }
+}
+ */
+
+/*
+// MARK: 1725. 可以形成最大正方形的矩形数目
+// https://leetcode.cn/problems/number-of-rectangles-that-can-form-the-largest-square/description/
+class Solution {
+    func countGoodRectangles(_ rectangles: [[Int]]) -> Int {
+        var map: [Int: Int] = [:]
+        for rect in rectangles {
+            let length = min(rect[0], rect[1])
+            if let value = map[length] {
+                map[length] = value + 1
+            } else {
+                map[length] = 1
+            }
+        }
+        var maxKey: Int = 0
+        for k in map.keys {
+            maxKey = max(maxKey, k)
+        }
+        return map[maxKey] ?? 0
+    }
+}
+ */
+
+/*
+// MARK: 884. 两句话中的不常见单词
+// https://leetcode.cn/problems/uncommon-words-from-two-sentences/description/
+class Solution {
+    func uncommonFromSentences(_ s1: String, _ s2: String) -> [String] {
+        var map1: [String: Int] = [:]
+        var map2: [String: Int] = [:]
+        for str in s1.components(separatedBy: " ") {
+            if let value = map1[str] {
+                map1[str] = value + 1
+            } else {
+                map1[str] = 1
+            }
+        }
+        for str in s2.components(separatedBy: " ") {
+            if let value = map2[str] {
+                map2[str] = value + 1
+            } else {
+                map2[str] = 1
+            }
+        }
+        var result: [String] = []
+        for k in map1.keys {
+            if map1[k] == 1 && map2[k] == nil {
+                result.append(k)
+            }
+        }
+        for k in map2.keys {
+            if map2[k] == 1 && map1[k] == nil {
+                result.append(k)
+            }
+        }
+        return result
+    }
+}
+ */
+
 /*
 // MARK: 1725. 可以形成最大正方形的矩形数目
 // https://leetcode-cn.com/problems/number-of-rectangles-that-can-form-the-largest-square/
@@ -899,7 +1130,308 @@ class Question1 {
 }
 */
 
-// MARK: ⚠️⚠️⚠️LeetCode 已解决-中等
+// MARK: ⚠️⚠️⚠️LeetCode 已解决-中等-27
+/*
+// MARK: 1753. 移除石子的最大得分
+// https://leetcode.cn/problems/maximum-score-from-removing-stones/description/
+class Solution {
+    func maximumScore(_ a: Int, _ b: Int, _ c: Int) -> Int {
+        var score = 0
+        var nums: [Int] = [a, b, c]
+        while true {
+            nums.sort(by: >)
+            if nums[0] > 0 && nums[1] > 0 {
+                nums[0] -= 1
+                nums[1] -= 1
+                score += 1
+            }
+            
+            if nums[0] * nums[1] == 0 && nums[0] * nums[2] == 0 && nums[1] * nums[2] == 0 {
+                // 如果三数之间两两相乘的结果都为0，就说明三个数当中至少有两个0
+                break
+            }
+        }
+        return score
+    }
+}
+ */
+
+/*
+// MARK: 1620. 网络信号最好的坐标
+// https://leetcode.cn/problems/coordinate-with-maximum-network-quality/description/
+class Solution {
+    func bestCoordinate(_ towers: [[Int]], _ radius: Int) -> [Int] {
+        var minX = 99;
+        var maxX = 0;
+        var minY = 99;
+        var maxY = 0;
+        for tower in towers {
+            let x = tower[0]
+            let y = tower[1]
+            if x < minX {
+                minX = x
+            }
+            if x > maxX {
+                maxX = x
+            }
+            if y < minY {
+                minY = y
+            }
+            if y > maxY {
+                maxY = y
+            }
+        }
+        
+        var bestSignal = 0
+        var bestX = 0
+        var bestY = 0
+        
+        for x in minX...maxX {
+            for y in minY...maxY {
+                var currentSignal = 0
+                for tower in towers {
+                    let disX = Double(x - tower[0])
+                    let disY = Double(y - tower[1])
+                    let dis = sqrt(disX * disX + disY * disY)
+                    if dis > Double(radius) {
+                        continue
+                    }
+                    // ⌊qi / (1 + d)⌋
+                    // ⌊val⌋ 表示小于等于 val 的最大整数（向下取整函数）。
+                    let signal = Double(tower[2]) / (1 + dis)
+                    currentSignal += Int(floor(signal))
+                }
+                if currentSignal > bestSignal {
+                    // 记录
+                    bestSignal = currentSignal
+                    bestX = x
+                    bestY = y
+                }
+            }
+        }
+        return [bestX, bestY]
+    }
+}
+ */
+
+/*
+// MARK: 2055. 蜡烛之间的盘子
+// https://leetcode.cn/problems/plates-between-candles/description/
+class Solution {
+    func platesBetweenCandles(_ s: String, _ queries: [[Int]]) -> [Int] {
+        var candlesLoc: [Int] = []
+        var sumPlates: [Int] = [0]
+        var idx = 0
+        for ch in s {
+            if ch == "|" {
+                candlesLoc.append(idx)
+            }
+            let sum = ch == "*" ? sumPlates[idx] + 1 : sumPlates[idx]
+            sumPlates.append(sum)
+            idx += 1
+        }
+        
+        var ans: [Int] = []
+        if candlesLoc.count == 0 {
+            // 压根没有蜡烛，那么有多少 queries 就输出多少个 0
+            for _ in queries {
+                ans.append(0)
+            }
+            return ans
+        }
+        for querie in queries {
+            let a = querie[0]
+            let b = querie[1]
+            var c = -1
+            var d = -1
+            // 找到 a 右边最近的蜡烛
+            var l = 0
+            var r = candlesLoc.count - 1
+            while (l < r) {
+                let mid = (l + r) >> 1
+                if candlesLoc[mid] >= a {
+                    r = mid
+                } else {
+                    l = mid + 1
+                }
+            }
+            if candlesLoc[r] >= a {
+                c = candlesLoc[r]
+            } else {
+                // a 右边已经没有蜡烛了
+                ans.append(0)
+                continue
+            }
+            // 找到 b 左边最近的蜡烛
+            l = 0
+            r = candlesLoc.count - 1
+            while (l < r) {
+                let mid = (l + r + 1) >> 1
+                if candlesLoc[mid] <= b {
+                    l = mid
+                } else {
+                    r = mid - 1
+                }
+            }
+            if candlesLoc[r] <= b {
+                d = candlesLoc[r]
+            } else {
+                // b 左边已经没有蜡烛了
+                ans.append(0)
+                continue
+            }
+            if c <= d {
+                ans.append(sumPlates[d + 1] - sumPlates[c])
+            } else {
+                // a 右边最近的蜡烛 在 b 左边最近的蜡烛 的 右边！ 那么当然是 0
+                ans.append(0)
+            }
+        }
+        
+        return ans
+    }
+}
+ */
+
+/*
+// MARK: 537. 复数乘法
+// https://leetcode.cn/problems/complex-number-multiplication/description/
+class Solution {
+    func complexNumberMultiply(_ num1: String, _ num2: String) -> String {
+        let left = num1.components(separatedBy: "+")
+        let left1 = left[0]
+        let left2 = left[1]
+        
+        let right = num2.components(separatedBy: "+")
+        let right1 = right[0]
+        let right2 = right[1]
+        
+        var results: [[Int]] = []
+        results.append(multi(left1, right1))
+        results.append(multi(left1, right2))
+        results.append(multi(left2, right1))
+        results.append(multi(left2, right2))
+        
+        var totalRational = 0
+        var totalIrrational = 0
+        
+        for item in results {
+            totalRational += item[0]
+            totalIrrational += item[1]
+        }
+        
+        return "\(totalRational)+\(totalIrrational)i"
+    }
+    
+    func multi(_ num1: String, _ num2: String) -> [Int] {
+        let leftPositive = !num1.hasPrefix("-")
+        let leftRational = !num1.hasSuffix("i")
+        let rightPositive = !num2.hasPrefix("-")
+        let rightRational = !num2.hasSuffix("i")
+        
+        let num1Start = num1.index(num1.startIndex, offsetBy: leftPositive ? 0 : 1)
+        let num1End = num1.index(num1.startIndex, offsetBy: leftRational ? num1.count - 1 : num1.count - 2)
+        
+        let num2Start = num2.index(num2.startIndex, offsetBy: rightPositive ? 0 : 1)
+        let num2End = num2.index(num2.startIndex, offsetBy: rightRational ? num2.count - 1 : num2.count - 2)
+        
+        guard let intNum1 = Int(String(num1[num1Start...num1End])), let intNum2 = Int(String(num2[num2Start...num2End])) else {
+            return [0, 0]
+        }
+        
+        let numPart = intNum1 * intNum2
+        
+        var isPositive = leftPositive == rightPositive
+        if !leftRational && !rightRational {
+            isPositive = !isPositive
+        }
+        let isRational = leftRational == rightRational
+        
+        if isRational {
+            if isPositive {
+                return [numPart, 0]
+            } else {
+                return [-numPart, 0]
+            }
+        } else {
+            if isPositive {
+                return [0, numPart]
+            } else {
+                return [0, -numPart]
+            }
+        }
+    }
+}
+ */
+
+/*
+// MARK: 540. 有序数组中的单一元素
+// https://leetcode.cn/problems/single-element-in-a-sorted-array/description/
+class Solution {
+    func singleNonDuplicate(_ nums: [Int]) -> Int {
+        var nums = nums
+        while nums.count > 1 {
+            let midIndex = nums.count / 2
+            if midIndex % 2 == 0 {
+                // midIndex 为偶：如果单一元素不在前半部分，则 midIndex 项应当等于 midIndex+1 项
+                if nums[midIndex] == nums[midIndex+1] {
+                    nums = Array(nums[midIndex+2...nums.count-1])
+                } else {
+                    if nums[midIndex] == nums[midIndex-1] {
+                        nums = Array(nums[0...midIndex-2])
+                    } else {
+                        return nums[midIndex]
+                    }
+                }
+            } else {
+                // midIndex 为奇：如果单一元素不在前半部分，则 midIndex 项应当等于 midIndex-1 项
+                if nums[midIndex] == nums[midIndex-1] {
+                    nums = Array(nums[midIndex+1...nums.count-1])
+                } else {
+                    if nums[midIndex] == nums[midIndex+1] {
+                        nums = Array(nums[0...midIndex-1])
+                    } else {
+                        return nums[midIndex]
+                    }
+                }
+            }
+        }
+        return nums[0]
+    }
+}
+ */
+
+/*
+// MARK: 1414. 和为 K 的最少斐波那契数字数目
+// https://leetcode.cn/problems/find-the-minimum-number-of-fibonacci-numbers-whose-sum-is-k/description/
+class Solution {
+    func findMinFibonacciNumbers(_ k: Int) -> Int {
+        var fibonacci: [Int] = [1, 1]
+        var a: Int = 1 // bigger one
+        var b: Int = 1 // smaller one
+        while a + b <= k {
+            let next = a + b
+            b = a
+            a = next
+            fibonacci.append(next)
+        }
+        var ans: Int = 0
+        var k = k
+        for i in 0..<fibonacci.count {
+            if k == 0 {
+                break
+            }
+            let index = fibonacci.count - i - 1
+            if k >= fibonacci[index] {
+                k -= fibonacci[index]
+                ans += 1
+            }
+        }
+        return ans
+    }
+}
+ */
+
 /*
 // MARK: 1414. 和为 K 的最少斐波那契数字数目
 // https://leetcode-cn.com/problems/find-the-minimum-number-of-fibonacci-numbers-whose-sum-is-k/
@@ -1981,7 +2513,7 @@ class ListNode {
 }
  */
 
-// MARK: ⚠️⚠️⚠️LeetCode 已解决-困难
+// MARK: ⚠️⚠️⚠️LeetCode 已解决-困难-2
 /*
 // MARK: 403. 青蛙过河
 // https://leetcode-cn.com/problems/frog-jump/
@@ -2171,7 +2703,7 @@ class Solution {
 }
  */
 
-// MARK: ⚠️⚠️⚠️真实面试题
+// MARK: ⚠️⚠️⚠️真实面试题-2
 /*
 // MARK: 三数之和 懂车帝面试题
 class ThreeSum {
