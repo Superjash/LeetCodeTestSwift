@@ -10,17 +10,13 @@ import Foundation
 
 print("Hello, World!")
 let begin = Date().timeIntervalSince1970
-let value = Solution().getMaximumGold([[0,6,0],[5,8,7],[0,9,0]])
+let value = Solution().reverse(1534236469)
 print("result \(value)")
 
 let end = Date().timeIntervalSince1970
 print("time consumed \((end - begin)) s")
 
-class Solution {
-    func getMaximumGold(_ grid: [[Int]]) -> Int {
 
-    }
-}
 
 //class Solution {
 //    func PredictTheWinner(_ nums: [Int]) -> Bool {
@@ -1130,7 +1126,51 @@ class Question1 {
 }
 */
 
-// MARK: ⚠️⚠️⚠️LeetCode 已解决-中等-27
+// MARK: ⚠️⚠️⚠️LeetCode 已解决-中等-28
+/*
+// MARK: 7. 整数反转
+// https://leetcode.cn/problems/reverse-integer/description/
+class Solution {
+    func reverse(_ x: Int) -> Int {
+        let isNegative = x < 0
+        var input = isNegative ? -x : x // 负数转正数
+        
+        var portions: [Int] = [] // 存储每一位
+        var divider = 1000000000; // 除因子
+        while divider > 0 {
+            let num = input / divider
+            portions.append(num) // 从高到低逐位记录
+            input %= divider
+            divider /= 10
+        }
+        
+        // 去先导零
+        while true {
+            if portions.first == 0 {
+                portions.removeFirst()
+            } else {
+                break
+            }
+        }
+        
+        var result = 0
+        var multipler = 1 // 乘因子
+        for num in portions {
+            result += num * multipler
+            multipler *= 10
+        }
+        result = isNegative ? -result : result
+        
+        // 题设：如果反转后整数超过 32 位的有符号整数的范围 [−231,  231 − 1] ，就返回 0。(格式为题，231其实是2的31次幂)
+        let limit = pow(2, 31)
+        if Decimal(result) <= limit - 1 && Decimal(result) >= -limit {
+            return result
+        }
+        return 0
+    }
+}
+ */
+
 /*
 // MARK: 1753. 移除石子的最大得分
 // https://leetcode.cn/problems/maximum-score-from-removing-stones/description/
