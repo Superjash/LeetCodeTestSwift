@@ -10,17 +10,13 @@ import Foundation
 
 print("Hello, World!")
 let begin = Date().timeIntervalSince1970
-let value = Solution().getMaximumGold([[0,6,0],[5,8,7],[0,9,0]])
+let value = Solution().reinitializePermutation(6)
 print("result \(value)")
 
 let end = Date().timeIntervalSince1970
 print("time consumed \((end - begin)) s")
 
-class Solution {
-    func getMaximumGold(_ grid: [[Int]]) -> Int {
 
-    }
-}
 
 //class Solution {
 //    func PredictTheWinner(_ nums: [Int]) -> Bool {
@@ -147,7 +143,25 @@ class Question3 {
 }
  */
 
-// MARK: ⚠️⚠️⚠️LeetCode 已解决-简单-32
+// MARK: ⚠️⚠️⚠️LeetCode 已解决-简单-33
+/*
+// MARK: 2011. 执行操作后的变量值
+// https://leetcode.cn/problems/final-value-of-variable-after-performing-operations/description/
+class Solution {
+    func finalValueAfterOperations(_ operations: [String]) -> Int {
+        var result = 0
+        for operation in operations {
+            if operation.contains("++") {
+                result += 1
+            } else if operation.contains("--") {
+                result -= 1
+            }
+        }
+        return result
+    }
+}
+ */
+
 /*
 // MARK: 1668. 最大重复子字符串
 // https://leetcode.cn/problems/maximum-repeating-substring/description/
@@ -1130,7 +1144,94 @@ class Question1 {
 }
 */
 
-// MARK: ⚠️⚠️⚠️LeetCode 已解决-中等-27
+// MARK: ⚠️⚠️⚠️LeetCode 已解决-中等-28
+/*
+// MARK: 1806. 还原排列的最少操作步数
+// https://leetcode.cn/problems/minimum-number-of-operations-to-reinitialize-a-permutation/description/
+class Solution {
+    func reinitializePermutation(_ n: Int) -> Int {
+        return minPermutationTimes(n)
+//        for i in 2...10 {
+//            if i % 2 == 0 {
+//                minPermutationTimes(i)
+//            }
+//        }
+//        return 0
+    }
+    
+    // 便于在 reinitializePermutation 方法中运行一次获得多个 n 的结果
+    func minPermutationTimes(_ n: Int) -> Int {
+        var array: [Int] = []
+        for i in 0..<n { // 生成 0.1.2.3... 数组
+            array.append(i)
+        }
+        var cycleTime = 0 // 变换次数
+        var timesMap: [Int: Int] = [:] // 数字对应的变换次数
+        label: while(true) {
+            cycleTime += 1
+            var newArray: [Int] = []
+            for i in 0..<n {
+                var num = 0
+                if i % 2 == 0 {
+                    num = array[i / 2]
+                } else {
+                    num = array[n / 2 + (i - 1) / 2]
+                }
+                if (num == i) {
+                    // 第i位循环完成
+                    if !timesMap.keys.contains(i) {
+                        timesMap[i] = cycleTime
+                    }
+                    if timesMap.keys.count == n {
+                        // 所有数字的变换次数都找到了
+                        break label
+                    }
+                }
+                newArray.append(num)
+            }
+            array = newArray
+        }
+        
+        guard var result = timesMap[0] else {
+            return 0
+        }
+        for i in 1..<n-1 { // 第0和第n-1位必定都是1，不需要计算最小公倍数
+            if let num = timesMap[i] {
+                if result % num != 0 {
+                    result = lcm(result, num)
+                }
+            }
+        }
+        
+//        print("\nn = \(n), 最少步数 \(result)")
+//        for i in 0..<n {
+//            print("\(i) 变换 \(timesMap[i]!) 次")
+//        }
+        
+        return result
+    }
+    
+    // 最大公约数
+    func gcd(_ m: Int, _ n: Int) -> Int {
+        var a = 0
+        var b = max(m,n)
+        var r = min(m,n)
+        
+        while r != 0 {
+            a = b
+            b = r
+            r = a % b
+        }
+        return b
+    }
+    
+    // 最小公倍数
+    func lcm(_ a: Int, _ b: Int) -> Int {
+        return a * b / gcd(a,b)
+    }
+}
+ */
+
 /*
 // MARK: 1753. 移除石子的最大得分
 // https://leetcode.cn/problems/maximum-score-from-removing-stones/description/
