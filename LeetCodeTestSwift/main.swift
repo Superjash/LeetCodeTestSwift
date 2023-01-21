@@ -10,31 +10,12 @@ import Foundation
 
 print("Hello, World!")
 let begin = Date().timeIntervalSince1970
-let value = Solution().reinitializePermutation(6)
+
+let value = Solution().PredictTheWinner([0, 1, 2, 3, 4])
 print("result \(value)")
 
 let end = Date().timeIntervalSince1970
 print("time consumed \((end - begin)) s")
-
-
-
-//class Solution {
-//    func PredictTheWinner(_ nums: [Int]) -> Bool {
-//        if nums.count % 2 == 0 {
-//            return true
-//        }
-//        var head = 0
-//        var tail = nums.count - 1
-//
-//        return false
-//    }
-//
-//    func findMaxGap(_ head: Int, _ tail: Int, _ nums: [Int]) -> Int {
-//
-//
-//        return 0
-//    }
-//}
 
 // MARK: ⚠️⚠️⚠️LeetCode 未解决-4
 /*
@@ -1144,19 +1125,19 @@ class Question1 {
 }
 */
 
-// MARK: ⚠️⚠️⚠️LeetCode 已解决-中等-28
+// MARK: ⚠️⚠️⚠️LeetCode 已解决-中等-29
 /*
 // MARK: 1806. 还原排列的最少操作步数
 // https://leetcode.cn/problems/minimum-number-of-operations-to-reinitialize-a-permutation/description/
 class Solution {
     func reinitializePermutation(_ n: Int) -> Int {
         return minPermutationTimes(n)
-//        for i in 2...10 {
-//            if i % 2 == 0 {
-//                minPermutationTimes(i)
-//            }
-//        }
-//        return 0
+        //        for i in 2...10 {
+        //            if i % 2 == 0 {
+        //                minPermutationTimes(i)
+        //            }
+        //        }
+        //        return 0
     }
     
     // 便于在 reinitializePermutation 方法中运行一次获得多个 n 的结果
@@ -1167,30 +1148,30 @@ class Solution {
         }
         var cycleTime = 0 // 变换次数
         var timesMap: [Int: Int] = [:] // 数字对应的变换次数
-        label: while(true) {
-            cycleTime += 1
-            var newArray: [Int] = []
-            for i in 0..<n {
-                var num = 0
-                if i % 2 == 0 {
-                    num = array[i / 2]
-                } else {
-                    num = array[n / 2 + (i - 1) / 2]
-                }
-                if (num == i) {
-                    // 第i位循环完成
-                    if !timesMap.keys.contains(i) {
-                        timesMap[i] = cycleTime
-                    }
-                    if timesMap.keys.count == n {
-                        // 所有数字的变换次数都找到了
-                        break label
-                    }
-                }
-                newArray.append(num)
+    label: while(true) {
+        cycleTime += 1
+        var newArray: [Int] = []
+        for i in 0..<n {
+            var num = 0
+            if i % 2 == 0 {
+                num = array[i / 2]
+            } else {
+                num = array[n / 2 + (i - 1) / 2]
             }
-            array = newArray
+            if (num == i) {
+                // 第i位循环完成
+                if !timesMap.keys.contains(i) {
+                    timesMap[i] = cycleTime
+                }
+                if timesMap.keys.count == n {
+                    // 所有数字的变换次数都找到了
+                    break label
+                }
+            }
+            newArray.append(num)
         }
+        array = newArray
+    }
         
         guard var result = timesMap[0] else {
             return 0
@@ -1203,10 +1184,10 @@ class Solution {
             }
         }
         
-//        print("\nn = \(n), 最少步数 \(result)")
-//        for i in 0..<n {
-//            print("\(i) 变换 \(timesMap[i]!) 次")
-//        }
+        //        print("\nn = \(n), 最少步数 \(result)")
+        //        for i in 0..<n {
+        //            print("\(i) 变换 \(timesMap[i]!) 次")
+        //        }
         
         return result
     }
@@ -1228,6 +1209,50 @@ class Solution {
     // 最小公倍数
     func lcm(_ a: Int, _ b: Int) -> Int {
         return a * b / gcd(a,b)
+    }
+}
+ */
+
+/*
+// MARK: 7. 整数反转
+// https://leetcode.cn/problems/reverse-integer/description/
+class Solution {
+    func reverse(_ x: Int) -> Int {
+        let isNegative = x < 0
+        var input = isNegative ? -x : x // 负数转正数
+        
+        var portions: [Int] = [] // 存储每一位
+        var divider = 1000000000; // 除因子
+        while divider > 0 {
+            let num = input / divider
+            portions.append(num) // 从高到低逐位记录
+            input %= divider
+            divider /= 10
+        }
+        
+        // 去先导零
+        while true {
+            if portions.first == 0 {
+                portions.removeFirst()
+            } else {
+                break
+            }
+        }
+        
+        var result = 0
+        var multipler = 1 // 乘因子
+        for num in portions {
+            result += num * multipler
+            multipler *= 10
+        }
+        result = isNegative ? -result : result
+        
+        // 题设：如果反转后整数超过 32 位的有符号整数的范围 [−231,  231 − 1] ，就返回 0。(格式为题，231其实是2的31次幂)
+        let limit = pow(2, 31)
+        if Decimal(result) <= limit - 1 && Decimal(result) >= -limit {
+            return result
+        }
+        return 0
     }
 }
  */
